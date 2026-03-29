@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>WORKOUT 4 — PRO</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --upper:#1e3a5f;--upper-a:#3d9bd4;--upper-g:rgba(61,155,212,0.12);
+  --lower:#1a4a1a;--lower-a:#52c452;--lower-g:rgba(82,196,82,0.12);
+  --cardio:#5a1a1a;--cardio-a:#ff5555;--cardio-g:rgba(255,85,85,0.12);
+  --bg:#080b12;--bg2:#0e1220;--bg3:#141826;--bg4:#1c2235;
+  --text:#eef0f8;--dim:#5a6080;--dim2:#8090b0;
+  --gold:#f0c040;--gold2:#ffd966;
+  --r:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 40% at 50% 0%,rgba(61,155,212,0.08) 0%,transparent 70%);pointer-events:none;z-index:0}
+
+/* ══ HEADER ══ */
+.hdr{position:sticky;top:0;z-index:90;background:rgba(8,11,18,0.9);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,0.06);padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:4px;background:linear-gradient(135deg,var(--gold),var(--upper-a));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-sub{font-size:9px;letter-spacing:2px;color:var(--dim);font-weight:500;margin-top:-3px;-webkit-text-fill-color:var(--dim)}
+.hdr-right{display:flex;gap:14px}
+.hs{text-align:center}
+.hs-v{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);line-height:1}
+.hs-l{font-size:9px;color:var(--dim);letter-spacing:1px;text-transform:uppercase}
+
+/* ══ TABS ══ */
+.tabs{display:flex;gap:6px;padding:12px 16px 6px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:7px 16px;border-radius:100px;border:1.5px solid rgba(255,255,255,0.08);background:transparent;color:var(--dim2);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.3px}
+.tab.active{background:var(--gold);border-color:var(--gold);color:#000}
+
+/* ══ CONTENT ══ */
+.content{padding:10px 14px 110px;max-width:680px;margin:0 auto;position:relative;z-index:1}
+
+/* ══ DAY SECTION ══ */
+.day-section{margin-bottom:10px;border-radius:var(--r);overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.4)}
+.day-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;user-select:none;position:relative;overflow:hidden}
+.day-hdr::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.07) 0%,transparent 50%)}
+.day-hdr.upper{background:linear-gradient(135deg,#0d2240,#1e3a5f)}
+.day-hdr.lower{background:linear-gradient(135deg,#0d2a0d,#1a4a1a)}
+.day-hdr.cardio{background:linear-gradient(135deg,#2a0d0d,#5a1a1a)}
+.day-left{display:flex;align-items:center;gap:10px}
+.day-icon{font-size:22px}
+.day-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px}
+.day-sub{font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:1px;margin-top:1px}
+.day-right{display:flex;align-items:center;gap:10px}
+.day-ring{flex-shrink:0;transform:rotate(-90deg)}
+.chevron{font-size:16px;color:rgba(255,255,255,0.4);transition:transform .3s}
+.open>.chevron,.day-hdr.open .chevron{transform:rotate(180deg)}
+
+.ex-list{background:var(--bg2);border:1px solid rgba(255,255,255,0.05);border-top:none;max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1)}
+.ex-list.open{max-height:5000px}
+
+/* ══ EXERCISE ROW ══ */
+.ex-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer;transition:background .15s;position:relative}
+.ex-row:last-child{border-bottom:none}
+.ex-row:hover{background:rgba(255,255,255,0.025)}
+.ex-row.done{opacity:.45}
+.ex-row.done .ex-name{text-decoration:line-through}
+.ex-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:13px;flex-shrink:0}
+.upper .ex-num{background:rgba(61,155,212,.18);color:var(--upper-a)}
+.lower .ex-num{background:rgba(82,196,82,.18);color:var(--lower-a)}
+.cardio .ex-num{background:rgba(255,85,85,.18);color:var(--cardio-a)}
+.ex-info{flex:1;min-width:0}
+.ex-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ex-meta{font-size:11px;color:var(--dim2);margin-top:2px}
+.ex-btn{width:36px;height:36px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:all .2s}
+.ex-play{background:rgba(240,192,64,.1);color:var(--gold);border:1.5px solid rgba(240,192,64,.25)}
+.ex-play:hover{background:var(--gold);color:#000;transform:scale(1.05)}
+.ex-check{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);color:transparent;font-size:13px}
+.ex-row.done .ex-check{background:var(--gold);border-color:var(--gold);color:#000}
+.stretch-bar{padding:11px 16px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.04);background:rgba(255,255,255,.02)}
+.stretch-txt{font-size:10px;color:var(--dim);letter-spacing:1px;text-transform:uppercase}
+
+/* ══ MODAL ══ */
+.overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.88);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.open{opacity:1;pointer-events:all}
+.modal{width:100%;max-width:680px;background:var(--bg3);border-radius:26px 26px 0 0;border:1px solid rgba(255,255,255,.07);max-height:94vh;overflow-y:auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.overlay.open .modal{transform:translateY(0)}
+.modal-pull{width:38px;height:4px;border-radius:2px;background:rgba(255,255,255,.12);margin:12px auto 0}
+
+/* ══ EXERCISE VIEWER ══ */
+.ev-top{padding:16px 20px 0;display:flex;align-items:flex-start;justify-content:space-between}
+.ev-tag{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:100px;display:inline-block;margin-bottom:6px}
+.ev-tag.upper{background:var(--upper-g);color:var(--upper-a)}
+.ev-tag.lower{background:var(--lower-g);color:var(--lower-a)}
+.ev-tag.cardio{background:var(--cardio-g);color:var(--cardio-a)}
+.ev-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;line-height:1.1}
+.ev-subtitle{font-size:12px;color:var(--dim2);margin-top:3px}
+.modal-close{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.07);border:none;color:var(--dim2);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* ══ ANIMATION STAGE ══ */
+.anim-stage{margin:14px 16px;border-radius:16px;background:var(--bg4);border:1px solid rgba(255,255,255,.07);overflow:hidden;position:relative;min-height:200px}
+.anim-stage svg{display:block;width:100%;height:auto}
+.muscle-label{position:absolute;top:10px;right:12px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);background:rgba(240,192,64,.1);padding:4px 10px;border-radius:100px;border:1px solid rgba(240,192,64,.2)}
+.form-tips{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(0deg,rgba(20,24,38,.98) 0%,transparent 100%);padding:10px 14px 14px}
+.tip-item{font-size:11px;color:var(--dim2);margin-top:4px;display:flex;align-items:flex-start;gap:6px}
+.tip-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:4px}
+
+/* ══ TABS IN MODAL ══ */
+.modal-tabs{display:flex;gap:0;margin:0 16px 12px;border-radius:10px;background:var(--bg2);padding:3px}
+.mtab{flex:1;padding:7px;border-radius:8px;border:none;background:transparent;color:var(--dim2);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
+.mtab.active{background:var(--bg4);color:var(--text)}
+
+/* ══ TIMER SECTION ══ */
+.timer-section{padding:0 16px 8px;display:none}
+.timer-section.show{display:block}
+.dur-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.dur-chip{padding:6px 14px;border-radius:100px;font-size:11px;font-weight:700;border:1.5px solid rgba(255,255,255,.1);color:var(--dim2);cursor:pointer;transition:all .2s}
+.dur-chip.on{border-color:var(--gold);color:var(--gold);background:rgba(240,192,64,.08)}
+.set-dots{display:flex;gap:7px;margin-bottom:14px;justify-content:center}
+.sdot{width:9px;height:9px;border-radius:50%;border:1.5px solid rgba(255,255,255,.18);transition:all .3s}
+.sdot.done{background:var(--gold);border-color:var(--gold)}
+.sdot.cur{border-color:var(--gold);animation:pulseDot .9s ease infinite}
+@keyframes pulseDot{0%,100%{transform:scale(1)}50%{transform:scale(1.35);box-shadow:0 0 8px var(--gold)}}
+.ring-wrap{position:relative;width:180px;height:180px;margin:0 auto 16px}
+.ring-svg{transform:rotate(-90deg)}
+.ring-track{fill:none;stroke:rgba(255,255,255,.06);stroke-width:9}
+.ring-bar{fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset 1s linear}
+.ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-num{font-family:'Bebas Neue',sans-serif;font-size:58px;letter-spacing:2px;line-height:1}
+.ring-lbl{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+.t-ctrls{display:flex;gap:10px;justify-content:center;margin-bottom:16px}
+.tbtn{height:48px;border-radius:100px;border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;display:flex;align-items:center;gap:7px;transition:all .2s}
+.tbtn-main{background:var(--gold);color:#000;padding:0 32px}
+.tbtn-main:hover{background:var(--gold2);transform:scale(1.03)}
+.tbtn-sec{background:rgba(255,255,255,.07);color:var(--text);padding:0 20px}
+.tbtn-sec:hover{background:rgba(255,255,255,.12)}
+.tbtn-skip{background:rgba(255,85,85,.1);color:#ff7070;padding:0 16px}
+
+/* ══ REST ══ */
+.rest-panel{padding:16px;text-align:center;display:none}
+.rest-panel.show{display:block}
+.rest-title{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--dim);letter-spacing:4px}
+.rest-big{font-family:'Bebas Neue',sans-serif;font-size:72px;color:var(--gold);line-height:1;margin:8px 0}
+
+/* ══ LOG SECTION ══ */
+.log-section{padding:0 16px 16px;display:none}
+.log-section.show{display:block}
+.log-title{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.col-heads{display:grid;grid-template-columns:36px 1fr 1fr 32px;gap:6px;margin-bottom:4px}
+.col-h{font-size:9px;color:var(--dim);letter-spacing:1px;text-transform:uppercase;text-align:center}
+.log-row{display:grid;grid-template-columns:36px 1fr 1fr 32px;gap:6px;align-items:center;margin-bottom:6px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+.log-num{font-size:11px;color:var(--dim);text-align:center}
+.log-input{background:transparent;border:none;color:var(--text);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;text-align:center;outline:none;width:100%;border-bottom:1.5px solid rgba(255,255,255,.1);padding:2px 0}
+.log-input::placeholder{color:var(--dim)}
+.log-done{width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(255,255,255,.15);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;transition:all .2s}
+.log-done.chk{background:var(--gold);border-color:var(--gold);color:#000}
+
+/* ══ HISTORY ══ */
+.hist-empty{text-align:center;padding:60px 20px;color:var(--dim)}
+.hist-icon{font-size:48px;margin-bottom:14px}
+.hist-card{background:var(--bg2);border-radius:var(--r);margin-bottom:8px;border:1px solid rgba(255,255,255,.05);overflow:hidden}
+.hist-top{padding:13px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.04)}
+.hist-type{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px}
+.hist-date{font-size:11px;color:var(--dim)}
+.hist-badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px;letter-spacing:.5px}
+.hist-badge.upper{background:var(--upper-g);color:var(--upper-a)}
+.hist-badge.lower{background:var(--lower-g);color:var(--lower-a)}
+.hist-badge.cardio{background:var(--cardio-g);color:var(--cardio-a)}
+.hist-nums{display:flex;gap:20px;padding:11px 16px}
+.hn-v{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold)}
+.hn-l{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
+
+/* ══ STATS ══ */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.stat-card{background:var(--bg2);border-radius:var(--r);padding:16px;border:1px solid rgba(255,255,255,.05)}
+.sc-v{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--gold);line-height:1}
+.sc-l{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+.sc-s{font-size:11px;color:var(--dim2);margin-top:6px}
+.streak-card{background:var(--bg2);border-radius:var(--r);padding:16px;margin-bottom:10px;border:1px solid rgba(255,255,255,.05)}
+.streak-label{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.sday-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.sday{aspect-ratio:1;border-radius:7px;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--dim);text-transform:uppercase;letter-spacing:.5px}
+.sday.done{background:rgba(240,192,64,.15);color:var(--gold)}
+.sday.today{border:1.5px solid var(--gold)}
+
+/* ══ BOTTOM NAV ══ */
+.bnav{position:fixed;bottom:0;left:0;right:0;z-index:90;background:rgba(8,11,18,.95);backdrop-filter:blur(24px);border-top:1px solid rgba(255,255,255,.05);display:flex;padding:6px 0 env(safe-area-inset-bottom,0)}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;cursor:pointer;border:none;background:transparent;color:var(--dim);font-family:'Outfit',sans-serif;transition:all .2s}
+.ni.active{color:var(--gold)}
+.ni-ico{font-size:22px;line-height:1;transition:transform .2s}
+.ni.active .ni-ico{transform:scale(1.1)}
+.ni-lbl{font-size:9px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+
+/* ══ TOAST ══ */
+.toast{position:fixed;top:72px;left:50%;transform:translateX(-50%) translateY(-16px);background:var(--gold);color:#000;padding:9px 20px;border-radius:100px;font-weight:700;font-size:12px;opacity:0;transition:all .3s;pointer-events:none;z-index:500;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ══ WC OVERLAY ══ */
+.wc{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.wc.show{opacity:1;pointer-events:all}
+.wc-box{background:var(--bg3);border-radius:24px;padding:36px 28px;text-align:center;border:1px solid rgba(240,192,64,.2);max-width:300px;width:88%;transform:scale(.85);transition:transform .35s ease}
+.wc.show .wc-box{transform:scale(1)}
+.wc-trophy{font-size:56px;margin-bottom:12px;animation:wcPop .6s ease .3s both}
+@keyframes wcPop{0%{transform:scale(0) rotate(-20deg)}80%{transform:scale(1.15) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
+.wc-title{font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--gold);letter-spacing:3px;margin-bottom:6px}
+.wc-sub{font-size:13px;color:var(--dim2);margin-bottom:20px}
+.wc-nums{display:flex;gap:18px;justify-content:center;margin-bottom:22px}
+.wn-v{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--text)}
+.wn-l{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
+.wc-btn{width:100%;height:46px;border-radius:100px;background:var(--gold);color:#000;border:none;font-family:'Outfit',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:all .2s}
+.wc-btn:hover{background:var(--gold2);transform:scale(1.02)}
+
+/* ══ MUSCLE BODY MAP ══ */
+.muscle-map{padding:0 16px 12px;display:none}
+.muscle-map.show{display:block}
+.mm-title{font-size:10px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.mm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.mm-chip{padding:7px 10px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);text-align:center}
+.mm-chip-name{font-size:11px;font-weight:600;color:var(--text);margin-bottom:1px}
+.mm-chip-role{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.5px}
+.mm-chip.primary{border-color:rgba(240,192,64,.3);background:rgba(240,192,64,.07)}
+.mm-chip.primary .mm-chip-name{color:var(--gold)}
+.mm-chip.primary .mm-chip-role{color:rgba(240,192,64,.6)}
+
+/* ══ FADE ANIMS ══ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeUp .35s ease both}
+.fade-in:nth-child(1){animation-delay:.04s}
+.fade-in:nth-child(2){animation-delay:.08s}
+.fade-in:nth-child(3){animation-delay:.12s}
+.fade-in:nth-child(4){animation-delay:.16s}
+
+/* ══ STICK FIGURE ANIMATIONS ══ */
+/* Bent Over Row */
+@keyframes borTorso{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-5deg)}}
+@keyframes borArm{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes borArm2{0%,100%{transform:translateY(0)}50%{transform:translateY(14px)}}
+/* Lat Pulldown */
+@keyframes latArm{0%,100%{transform:rotate(-30deg)}50%{transform:rotate(20deg)}}
+/* Squat */
+@keyframes sqLeg{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.65)}}
+@keyframes sqBody{0%,100%{transform:translateY(0)}50%{transform:translateY(22px)}}
+/* Lunge */
+@keyframes lungeF{0%,100%{d:path('M100,140 L80,190')}50%{d:path('M100,140 L70,175')}}
+/* Curl */
+@keyframes curlArm{0%,100%{transform:rotate(0deg)transform-origin:top}50%{transform:rotate(-80deg)}}
+/* Press */
+@keyframes pressArm{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+/* Calf */
+@keyframes calfRise{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+/* Plank */
+@keyframes plankShake{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+/* Crunch */
+@keyframes crunchBody{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-30deg)}}
+/* Cardio */
+@keyframes runLeg1{0%,100%{transform:rotate(30deg)}50%{transform:rotate(-40deg)}}
+@keyframes runLeg2{0%,100%{transform:rotate(-40deg)}50%{transform:rotate(30deg)}}
+@keyframes runArm1{0%,100%{transform:rotate(20deg)}50%{transform:rotate(-30deg)}}
+@keyframes runArm2{0%,100%{transform:rotate(-30deg)}50%{transform:rotate(20deg)}}
+@keyframes runBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+/* Row */
+@keyframes rowPull{0%,100%{transform:translateX(0)}50%{transform:translateX(-10px)}}
+/* Shrug */
+@keyframes shrugShoulder{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+/* GoodMorning */
+@keyframes gmHinge{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-40deg)}}
+/* LegExt */
+@keyframes legExtKnee{0%,100%{transform:rotate(0deg)}50%{transform:rotate(45deg)}}
+/* LegCurl */
+@keyframes legCurlKnee{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-80deg)}}
+/* LateralRaise */
+@keyframes latRaiseArm{0%,100%{transform:rotate(0deg)}50%{transform:rotate(80deg)}}
+/* Twist */
+@keyframes twistCrunch{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-40deg)}};
+/* DeclineBench */
+@keyframes declinePress{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+/* External Rotation */
+@keyframes extRot{0%,100%{transform:rotate(0deg)}50%{transform:rotate(80deg)}}
+/* Step Up */
+@keyframes stepUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div><div class="logo">WORKOUT 4</div><div class="logo-sub">Training System</div></div>
+  <div class="hdr-right">
+    <div class="hs"><div class="hs-v" id="hSess">0</div><div class="hs-l">Sessions</div></div>
+    <div class="hs"><div class="hs-v" id="hStreak">0</div><div class="hs-l">Streak</div></div>
+    <div class="hs"><div class="hs-v" id="hSets">0</div><div class="hs-l">Sets</div></div>
+  </div>
+</header>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('workout')">💪 Workout</button>
+  <button class="tab" onclick="switchTab('history')">📋 History</button>
+  <button class="tab" onclick="switchTab('stats')">📊 Stats</button>
+</div>
+
+<!-- CONTENT -->
+<div class="content" id="content"></div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="overlayClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-pull"></div>
+
+    <!-- HEADER -->
+    <div class="ev-top">
+      <div>
+        <div class="ev-tag" id="evTag">UPPER</div>
+        <div class="ev-title" id="evTitle">Exercise</div>
+        <div class="ev-subtitle" id="evSub">3 Sets × 10–12 Reps</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <!-- ANIMATION STAGE -->
+    <div class="anim-stage" id="animStage">
+      <div class="muscle-label" id="muscleLabel">CHEST</div>
+      <div id="svgContainer"></div>
+      <div class="form-tips" id="formTips"></div>
+    </div>
+
+    <!-- MODAL TABS -->
+    <div class="modal-tabs">
+      <button class="mtab active" onclick="switchModalTab('timer')">⏱ Timer</button>
+      <button class="mtab" onclick="switchModalTab('log')">📝 Log</button>
+      <button class="mtab" onclick="switchModalTab('muscles')">💪 Muscles</button>
+    </div>
+
+    <!-- TIMER -->
+    <div class="timer-section show" id="timerSection">
+      <div class="dur-row" id="durRow"></div>
+      <div class="set-dots" id="setDots"></div>
+      <div class="ring-wrap">
+        <svg class="ring-svg" width="180" height="180" viewBox="0 0 180 180">
+          <circle class="ring-track" cx="90" cy="90" r="78"/>
+          <circle class="ring-bar" id="ringBar" cx="90" cy="90" r="78" stroke-dasharray="490" stroke-dashoffset="0"/>
+        </svg>
+        <div class="ring-inner">
+          <div class="ring-num" id="ringNum">00</div>
+          <div class="ring-lbl" id="ringLbl">READY</div>
+        </div>
+      </div>
+      <div class="t-ctrls">
+        <button class="tbtn tbtn-sec tbtn-skip" onclick="resetTimer()">↺</button>
+        <button class="tbtn tbtn-main" id="timerBtn" onclick="toggleTimer()">▶ START</button>
+        <button class="tbtn tbtn-sec" onclick="nextSet()">Next →</button>
+      </div>
+    </div>
+
+    <!-- REST -->
+    <div class="rest-panel" id="restPanel">
+      <div class="rest-title">REST TIME 🧘</div>
+      <div style="font-size:12px;color:var(--dim2);margin-bottom:6px">Great set! Recover before the next one.</div>
+      <div class="rest-big" id="restNum">60</div>
+      <button class="tbtn tbtn-sec" onclick="skipRest()" style="margin:0 auto">Skip Rest →</button>
+    </div>
+
+    <!-- LOG -->
+    <div class="log-section" id="logSection">
+      <div class="log-title">Log Your Sets</div>
+      <div class="col-heads">
+        <div class="col-h"></div>
+        <div class="col-h">Reps</div>
+        <div class="col-h">Weight kg</div>
+        <div class="col-h"></div>
+      </div>
+      <div id="logRows"></div>
+    </div>
+
+    <!-- MUSCLES -->
+    <div class="muscle-map" id="muscleMap">
+      <div class="mm-title">Muscles Worked</div>
+      <div class="mm-grid" id="mmGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- WORKOUT COMPLETE -->
+<div class="wc" id="wcOverlay">
+  <div class="wc-box">
+    <div class="wc-trophy">🏆</div>
+    <div class="wc-title">WORKOUT DONE!</div>
+    <div class="wc-sub" id="wcSub">Amazing session!</div>
+    <div class="wc-nums">
+      <div><div class="wn-v" id="wcSets">0</div><div class="wn-l">Sets</div></div>
+      <div><div class="wn-v" id="wcEx">0</div><div class="wn-l">Exercises</div></div>
+      <div><div class="wn-v" id="wcTime">0m</div><div class="wn-l">Duration</div></div>
+    </div>
+    <button class="wc-btn" onclick="closeWC()">✓ Save & Continue</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="ni active" id="navWorkout" onclick="switchTab('workout')"><span class="ni-ico">💪</span><span class="ni-lbl">Workout</span></button>
+  <button class="ni" id="navHistory" onclick="switchTab('history')"><span class="ni-ico">📋</span><span class="ni-lbl">History</span></button>
+  <button class="ni" id="navStats" onclick="switchTab('stats')"><span class="ni-ico">📊</span><span class="ni-lbl">Stats</span></button>
+</nav>
+
+<script>
+// ═══════════════════════════════════════════════
+// EXERCISE DATABASE — with animations + muscles
+// ═══════════════════════════════════════════════
+const EXERCISES = {
+  upper: {
+    label:'UPPER BODY', days:'Day 1 & 4', cls:'upper', emoji:'💪', color:'#3d9bd4',
+    list:[
+      {name:'Dumbbell Bent Over Rows',sets:3,reps:'10–12',muscle:'LATS & BACK',
+       muscles:[{n:'Latissimus Dorsi',r:'Primary'},{n:'Rhomboids',r:'Primary'},{n:'Biceps',r:'Secondary'},{n:'Rear Deltoids',r:'Secondary'},{n:'Core',r:'Stabilizer'}],
+       tips:['Hinge at hips 45°, back flat','Pull elbows back past torso','Squeeze shoulder blades at top'],
+       svg:()=>bentOverRow()},
+      {name:'Lat Pull Down',sets:2,reps:'10–12',muscle:'LATS',
+       muscles:[{n:'Latissimus Dorsi',r:'Primary'},{n:'Biceps',r:'Secondary'},{n:'Rear Deltoids',r:'Secondary'},{n:'Teres Major',r:'Primary'}],
+       tips:['Lean back slightly','Pull bar to upper chest','Control the return slowly'],
+       svg:()=>latPulldown()},
+      {name:'Low Cable Rows',sets:2,reps:'10–12',muscle:'MID BACK',
+       muscles:[{n:'Rhomboids',r:'Primary'},{n:'Mid Trapezius',r:'Primary'},{n:'Biceps',r:'Secondary'},{n:'Erector Spinae',r:'Stabilizer'}],
+       tips:['Keep torso upright','Pull to belly button','Pause 1s at contraction'],
+       svg:()=>cableRow()},
+      {name:'Dumbbell Shrugs',sets:3,reps:'10–12',muscle:'TRAPS',
+       muscles:[{n:'Upper Trapezius',r:'Primary'},{n:'Levator Scapulae',r:'Secondary'},{n:'Rhomboids',r:'Stabilizer'}],
+       tips:['Shrug straight UP, not forward','Hold 2s at the top','Lower slowly and fully'],
+       svg:()=>dbShrugs()},
+      {name:'Decline Bench Press',sets:3,reps:'10–12',muscle:'LOWER CHEST',
+       muscles:[{n:'Lower Pectoralis',r:'Primary'},{n:'Triceps',r:'Secondary'},{n:'Front Deltoids',r:'Secondary'}],
+       tips:['Feet secured, decline 30°','Touch lower chest','Full lockout at top'],
+       svg:()=>declineBench()},
+      {name:'Incline Bench Press',sets:2,reps:'10–12',muscle:'UPPER CHEST',
+       muscles:[{n:'Upper Pectoralis',r:'Primary'},{n:'Front Deltoids',r:'Secondary'},{n:'Triceps',r:'Secondary'}],
+       tips:['Set bench 30–45°','Bar to upper chest','Keep wrists stacked'],
+       svg:()=>inclineBench()},
+      {name:'Dumbbell Overhead Press',sets:2,reps:'10–12',muscle:'SHOULDERS',
+       muscles:[{n:'Deltoids',r:'Primary'},{n:'Triceps',r:'Secondary'},{n:'Upper Traps',r:'Secondary'}],
+       tips:['Start at shoulder height','Press directly overhead','Keep core braced'],
+       svg:()=>overheadPress()},
+      {name:'Dumbbell Lateral Raises',sets:3,reps:'10–12',muscle:'SIDE DELTS',
+       muscles:[{n:'Lateral Deltoid',r:'Primary'},{n:'Supraspinatus',r:'Secondary'},{n:'Upper Traps',r:'Stabilizer'}],
+       tips:['Slight forward lean','Lead with elbows, not hands','Stop at shoulder height'],
+       svg:()=>lateralRaise()},
+      {name:'Dumbbell External Rotation',sets:2,reps:'10–12',muscle:'ROTATOR CUFF',
+       muscles:[{n:'Infraspinatus',r:'Primary'},{n:'Teres Minor',r:'Primary'},{n:'Posterior Capsule',r:'Secondary'}],
+       tips:['Elbow pinned to side at 90°','Rotate outward slowly','Do not swing torso'],
+       svg:()=>externalRotation()},
+      {name:'Good Morning',sets:3,reps:'10–12',muscle:'HAMSTRINGS',
+       muscles:[{n:'Hamstrings',r:'Primary'},{n:'Glutes',r:'Primary'},{n:'Erector Spinae',r:'Secondary'},{n:'Core',r:'Stabilizer'}],
+       tips:['Bar on upper traps','Hinge at hips, chest forward','Feel stretch in hamstrings'],
+       svg:()=>goodMorning()},
+      {name:'Bicep Curls / Tricep Push Down',sets:2,reps:'10–12',muscle:'ARMS',
+       muscles:[{n:'Biceps Brachii',r:'Primary'},{n:'Triceps Brachii',r:'Primary'},{n:'Brachialis',r:'Secondary'}],
+       tips:['Keep elbows pinned to sides','Full range of motion','Alternate or superset'],
+       svg:()=>bicepCurl()},
+    ]
+  },
+  lower: {
+    label:'LOWER BODY', days:'Day 2 & 5', cls:'lower', emoji:'🦵', color:'#52c452',
+    list:[
+      {name:'Squats',sets:3,reps:'10–12',muscle:'QUADS & GLUTES',
+       muscles:[{n:'Quadriceps',r:'Primary'},{n:'Glutes',r:'Primary'},{n:'Hamstrings',r:'Secondary'},{n:'Core',r:'Stabilizer'}],
+       tips:['Feet shoulder-width, toes out 15°','Break parallel, chest up','Drive through heels on ascent'],
+       svg:()=>squat()},
+      {name:'Lunges',sets:2,reps:'10–12',muscle:'QUADS',
+       muscles:[{n:'Quadriceps',r:'Primary'},{n:'Glutes',r:'Secondary'},{n:'Hamstrings',r:'Secondary'},{n:'Balance Muscles',r:'Stabilizer'}],
+       tips:['Step forward, knee over ankle','Back knee nearly touches floor','Push through front heel to return'],
+       svg:()=>lunge()},
+      {name:'Step Up / Leg Press',sets:2,reps:'10–12',muscle:'GLUTES & QUADS',
+       muscles:[{n:'Glutes',r:'Primary'},{n:'Quadriceps',r:'Primary'},{n:'Hamstrings',r:'Secondary'}],
+       tips:['Full foot on step/platform','Drive knee up explosively','Control descent slowly'],
+       svg:()=>stepUp()},
+      {name:'Leg Extension',sets:2,reps:'10–12',muscle:'QUADS',
+       muscles:[{n:'Rectus Femoris',r:'Primary'},{n:'Vastus Lateralis',r:'Primary'},{n:'Vastus Medialis',r:'Primary'}],
+       tips:['Seat pad against lower shin','Extend fully, pause 1s','Control the lowering phase'],
+       svg:()=>legExtension()},
+      {name:'Standing Calf Raises',sets:3,reps:'10–12',muscle:'CALVES',
+       muscles:[{n:'Gastrocnemius',r:'Primary'},{n:'Soleus',r:'Secondary'}],
+       tips:['Stand on edge of step','Rise onto toes fully','Lower heel below step level'],
+       svg:()=>calfRaises()},
+      {name:'Seated Calf Raises',sets:2,reps:'10–12',muscle:'SOLEUS',
+       muscles:[{n:'Soleus',r:'Primary'},{n:'Gastrocnemius',r:'Secondary'},{n:'Tibialis Posterior',r:'Stabilizer'}],
+       tips:['Knees at 90°, pad on lower thigh','Full plantar flexion at top','Slow 3s descent'],
+       svg:()=>seatedCalf()},
+      {name:'Leg Curls',sets:3,reps:'10–12',muscle:'HAMSTRINGS',
+       muscles:[{n:'Biceps Femoris',r:'Primary'},{n:'Semitendinosus',r:'Primary'},{n:'Semimembranosus',r:'Primary'},{n:'Gastrocnemius',r:'Secondary'}],
+       tips:['Hips flat on pad','Curl fully to glutes','Control the negative slowly'],
+       svg:()=>legCurl()},
+    ]
+  },
+  cardio: {
+    label:'CARDIO & ABS', days:'Day 3 & 6', cls:'cardio', emoji:'🔥', color:'#ff5555',
+    list:[
+      {name:'Group Activity or Cardio',sets:1,reps:'30–40 min',muscle:'FULL BODY',
+       muscles:[{n:'Heart & Lungs',r:'Primary'},{n:'Full Body',r:'Primary'},{n:'Fat Burn',r:'Benefit'}],
+       tips:['Keep heart rate 60–80% max','Stay hydrated throughout','Mix intensity levels'],
+       svg:()=>cardioRun()},
+      {name:'Crunches / Sit-Ups',sets:2,reps:'10–12',muscle:'ABS',
+       muscles:[{n:'Rectus Abdominis',r:'Primary'},{n:'Hip Flexors',r:'Secondary'},{n:'Obliques',r:'Stabilizer'}],
+       tips:['Chin away from chest','Exhale as you crunch up','Focus on ab contraction'],
+       svg:()=>crunch()},
+      {name:'Reverse Crunches',sets:2,reps:'10–12',muscle:'LOWER ABS',
+       muscles:[{n:'Lower Rectus Abdominis',r:'Primary'},{n:'Transverse Abdominis',r:'Secondary'},{n:'Hip Flexors',r:'Secondary'}],
+       tips:['Pull knees to chest, not swing','Tilt pelvis at the top','Feet off floor throughout'],
+       svg:()=>reverseCrunch()},
+      {name:'Lateral Flexion',sets:2,reps:'10–12',muscle:'OBLIQUES',
+       muscles:[{n:'External Obliques',r:'Primary'},{n:'Internal Obliques',r:'Primary'},{n:'Quadratus Lumborum',r:'Secondary'}],
+       tips:['Bend directly to the side','Keep hips square','No rotation or forward lean'],
+       svg:()=>lateralFlex()},
+      {name:'Twisting Crunches',sets:2,reps:'10–12',muscle:'OBLIQUES',
+       muscles:[{n:'Obliques',r:'Primary'},{n:'Rectus Abdominis',r:'Secondary'},{n:'Transverse Abdominis',r:'Stabilizer'}],
+       tips:['Rotate shoulder to opposite knee','Keep lower back pressed down','Slow controlled movement'],
+       svg:()=>twistCrunch()},
+      {name:'Plank & Side Plank',sets:2,reps:'Hold Max',muscle:'CORE',
+       muscles:[{n:'Transverse Abdominis',r:'Primary'},{n:'Obliques',r:'Primary'},{n:'Erector Spinae',r:'Stabilizer'},{n:'Glutes',r:'Stabilizer'}],
+       tips:['Body in one straight line','Do not let hips sag','Breathe steadily throughout'],
+       svg:()=>plank()},
+    ]
+  }
+};
+
+// ═══════════════════════════════════════
+// SVG ANIMATED FIGURES
+// ═══════════════════════════════════════
+const C = '#eef0f8', DIM = '#4a5580', ACC = '#f0c040', RED='#ff5555', GRN='#52c452', BLU='#3d9bd4';
+
+function svgWrap(content, h=210){
+  return `<svg viewBox="0 0 320 ${h}" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">${content}</svg>`;
+}
+function stickHead(x,y,r=14,c=C){return `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}" opacity=".95"/>`}
+function stickLine(x1,y1,x2,y2,c=C,w=4,cap='round'){return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}" stroke-linecap="${cap}"/>`}
+function label(x,y,txt,c=DIM,fs=11){return `<text x="${x}" y="${y}" fill="${c}" font-size="${fs}" font-family="Outfit,sans-serif" font-weight="600" text-anchor="middle">${txt}</text>`}
+function arrow(x1,y1,x2,y2,c=ACC){return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="2" stroke-dasharray="4,3" opacity=".7"/>`}
+
+// BENT OVER ROW
+function bentOverRow(){
+  return svgWrap(`
+  <defs><style>
+    .bor-body{animation:borTorso 1.4s ease-in-out infinite;transform-origin:160px 100px}
+    .bor-arm1{animation:borArm 1.4s ease-in-out infinite;transform-origin:160px 100px}
+    .bor-arm2{animation:borArm2 1.4s ease-in-out infinite;transform-origin:160px 100px}
+  </style></defs>
+  <g class="bor-body">
+    ${stickHead(160,50)}
+    <!-- torso angled -->
+    ${stickLine(160,64,160,115)}
+    <!-- hips -->
+    ${stickLine(130,115,190,115)}
+    <!-- legs straight down -->
+    ${stickLine(135,115,125,170)} ${stickLine(185,115,195,170)}
+    ${stickLine(125,170,115,175)} ${stickLine(195,170,205,175)}
+  </g>
+  <g class="bor-arm1">
+    <!-- left arm pulling up -->
+    ${stickLine(145,85,110,110,BLU,5)} ${stickLine(110,110,100,95,BLU,5)}
+  </g>
+  <g class="bor-arm2">
+    ${stickLine(175,85,210,110,BLU,5)} ${stickLine(210,110,220,95,BLU,5)}
+  </g>
+  <!-- dumbbells -->
+  <rect x="88" y="88" width="22" height="8" rx="3" fill="${ACC}" opacity=".9"/>
+  <rect x="208" y="88" width="22" height="8" rx="3" fill="${ACC}" opacity=".9"/>
+  ${label(160,200,'Bent Over Row — hinge 45°, pull elbows up')}
+  `);
+}
+
+// LAT PULLDOWN
+function latPulldown(){
+  return svgWrap(`
+  <defs><style>
+    .lat-arms{animation:borArm 1.6s ease-in-out infinite;transform-origin:160px 80px}
+    .lat-bar{animation:borArm 1.6s ease-in-out infinite;transform-origin:160px 80px}
+  </style></defs>
+  <!-- cable machine bar -->
+  <line x1="80" x2="240" y1="25" y2="25" stroke="${DIM}" stroke-width="3"/>
+  <line x1="160" y1="25" x2="160" y2="50" stroke="${DIM}" stroke-width="2" stroke-dasharray="4,3"/>
+  <g class="lat-bar">
+    <line x1="110" y1="55" x2="210" y2="55" stroke="${ACC}" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="108" cy="55" r="5" fill="${ACC}"/><circle cx="212" cy="55" r="5" fill="${ACC}"/>
+  </g>
+  ${stickHead(160,75)}
+  <g class="lat-arms">
+    <!-- arms up holding bar -->
+    ${stickLine(160,89,120,60,BLU,5)} ${stickLine(160,89,200,60,BLU,5)}
+  </g>
+  ${stickLine(160,89,160,140)}
+  ${stickLine(135,140,165,140)}
+  ${stickLine(140,140,130,185)} ${stickLine(165,140,175,185)}
+  ${stickLine(130,185,120,190)} ${stickLine(175,185,185,190)}
+  ${label(160,205,'Lat Pulldown — pull to upper chest, lean back slightly')}
+  `);
+}
+
+// CABLE ROW
+function cableRow(){
+  return svgWrap(`
+  <defs><style>
+    .crow-torso{animation:rowPull 1.5s ease-in-out infinite;transform-origin:160px 120px}
+    .crow-arms{animation:rowPull 1.5s ease-in-out infinite;transform-origin:160px 120px}
+  </style></defs>
+  <!-- floor -->
+  <line x1="60" y1="175" x2="280" y2="175" stroke="${DIM}" stroke-width="2"/>
+  <!-- cable machine -->
+  <rect x="50" y="90" width="20" height="85" rx="4" fill="${DIM}" opacity=".4"/>
+  <circle cx="60" cy="105" r="8" fill="${DIM}" opacity=".5"/>
+  <line x1="68" y1="105" x2="130" y2="130" stroke="${DIM}" stroke-width="1.5" stroke-dasharray="4,3"/>
+  ${stickHead(180,75)}
+  <g class="crow-torso">
+    ${stickLine(180,89,180,140)}
+    ${stickLine(155,140,195,140)}
+    ${stickLine(160,140,150,175)} ${stickLine(190,140,200,175)}
+    ${stickLine(150,175,140,180)} ${stickLine(200,175,210,180)}
+  </g>
+  <g class="crow-arms">
+    ${stickLine(170,105,130,130,BLU,5)} ${stickLine(190,105,130,130,BLU,5)}
+    <rect x="115" y="123" width="20" height="7" rx="2" fill="${ACC}"/>
+  </g>
+  ${label(160,200,'Low Cable Row — pull to belly, keep torso upright')}
+  `);
+}
+
+// DB SHRUGS
+function dbShrugs(){
+  return svgWrap(`
+  <defs><style>
+    .shrug-body{animation:shrugShoulder 1.3s ease-in-out infinite;transform-origin:160px 85px}
+  </style></defs>
+  ${stickHead(160,50)}
+  <g class="shrug-body">
+    ${stickLine(160,64,160,120)}
+    ${stickLine(135,85,100,100,BLU,5)} ${stickLine(185,85,220,100,BLU,5)}
+    <!-- dumbbells -->
+    <rect x="84" y="92" width="24" height="9" rx="3" fill="${ACC}"/>
+    <rect x="212" y="92" width="24" height="9" rx="3" fill="${ACC}"/>
+    ${stickLine(130,120,165,120)}
+    ${stickLine(135,120,125,170)} ${stickLine(160,120,170,170)}
+    ${stickLine(125,170,115,175)} ${stickLine(170,170,180,175)}
+  </g>
+  <!-- up arrow -->
+  <text x="160" y="35" fill="${ACC}" font-size="18" text-anchor="middle" style="animation:shrugShoulder 1.3s ease-in-out infinite">↑</text>
+  ${label(160,200,'Dumbbell Shrugs — shrug straight UP, hold 2s')}
+  `);
+}
+
+// DECLINE BENCH
+function declineBench(){
+  return svgWrap(`
+  <defs><style>
+    .dec-arms{animation:declinePress 1.5s ease-in-out infinite;transform-origin:160px 100px}
+  </style></defs>
+  <!-- bench -->
+  <rect x="80" y="140" width="160" height="12" rx="5" fill="${DIM}" opacity=".5"/>
+  <line x1="100" y1="152" x2="90" y2="175" stroke="${DIM}" stroke-width="3"/>
+  <line x1="220" y1="152" x2="230" y2="175" stroke="${DIM}" stroke-width="3"/>
+  <!-- body on bench -->
+  ${stickHead(220,125)}
+  ${stickLine(205,135,120,135)}
+  <!-- legs on decline -->
+  ${stickLine(120,135,95,165,C,4)} ${stickLine(120,135,100,160,C,4)}
+  ${stickLine(95,165,88,170)} ${stickLine(100,160,93,165)}
+  <!-- bar -->
+  <line x1="120" y1="95" x2="210" y2="95" stroke="${ACC}" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="118" cy="95" r="8" fill="${DIM}" opacity=".6"/><circle cx="212" cy="95" r="8" fill="${DIM}" opacity=".6"/>
+  <g class="dec-arms">
+    ${stickLine(185,133,165,98,BLU,5)} ${stickLine(145,133,155,98,BLU,5)}
+  </g>
+  ${label(160,200,'Decline Bench — lower chest target, full lockout')}
+  `);
+}
+
+// INCLINE BENCH
+function inclineBench(){
+  return svgWrap(`
+  <defs><style>
+    .inc-arms{animation:pressArm 1.5s ease-in-out infinite;transform-origin:160px 90px}
+  </style></defs>
+  <!-- inclined bench -->
+  <rect x="85" y="120" width="150" height="11" rx="5" fill="${DIM}" opacity=".5" transform="rotate(-25,160,125)"/>
+  <line x1="100" y1="152" x2="95" y2="178" stroke="${DIM}" stroke-width="3"/>
+  <line x1="215" y1="118" x2="220" y2="145" stroke="${DIM}" stroke-width="3"/>
+  ${stickHead(215,90)}
+  <!-- torso angled -->
+  ${stickLine(205,102,130,145)}
+  ${stickLine(130,145,110,165,C,4)} ${stickLine(130,145,118,162,C,4)}
+  <!-- bar at upper chest -->
+  <line x1="120" y1="78" x2="208" y2="78" stroke="${ACC}" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="118" cy="78" r="7" fill="${DIM}" opacity=".6"/><circle cx="210" cy="78" r="7" fill="${DIM}" opacity=".6"/>
+  <g class="inc-arms">
+    ${stickLine(195,100,185,80,BLU,5)} ${stickLine(155,120,155,80,BLU,5)}
+  </g>
+  ${label(160,205,'Incline Press — 30–45° bench, upper chest emphasis')}
+  `);
+}
+
+// OVERHEAD PRESS
+function overheadPress(){
+  return svgWrap(`
+  <defs><style>
+    .ohp-arms{animation:pressArm 1.4s ease-in-out infinite;transform-origin:160px 90px}
+  </style></defs>
+  ${stickHead(160,45)}
+  <g class="ohp-arms">
+    ${stickLine(160,59,125,55,BLU,5)} ${stickLine(160,59,195,55,BLU,5)}
+    ${stickLine(125,55,112,35,BLU,5)} ${stickLine(195,55,208,35,BLU,5)}
+    <!-- dumbbells -->
+    <rect x="98" y="27" width="20" height="8" rx="3" fill="${ACC}"/>
+    <rect x="202" y="27" width="20" height="8" rx="3" fill="${ACC}"/>
+  </g>
+  ${stickLine(160,59,160,115)}
+  ${stickLine(132,115,188,115)}
+  ${stickLine(137,115,127,168)} ${stickLine(183,115,193,168)}
+  ${stickLine(127,168,117,174)} ${stickLine(193,168,203,174)}
+  <!-- floor -->
+  <line x1="100" y1="175" x2="220" y2="175" stroke="${DIM}" stroke-width="2"/>
+  ${label(160,200,'Overhead Press — press directly up, core tight')}
+  `);
+}
+
+// LATERAL RAISE
+function lateralRaise(){
+  return svgWrap(`
+  <defs><style>
+    .lat-r-arms{animation:latRaiseArm 1.5s ease-in-out infinite;transform-origin:160px 80px}
+  </style></defs>
+  ${stickHead(160,45)}
+  ${stickLine(160,59,160,115)}
+  <g class="lat-r-arms">
+    ${stickLine(150,75,105,90,BLU,5)} ${stickLine(170,75,215,90,BLU,5)}
+    <rect x="88" y="83" width="20" height="7" rx="2" fill="${ACC}"/>
+    <rect x="212" y="83" width="20" height="7" rx="2" fill="${ACC}"/>
+  </g>
+  ${stickLine(132,115,188,115)}
+  ${stickLine(137,115,127,168)} ${stickLine(183,115,193,168)}
+  ${stickLine(127,168,117,174)} ${stickLine(193,168,203,174)}
+  <line x1="100" y1="175" x2="220" y2="175" stroke="${DIM}" stroke-width="2"/>
+  ${arrow(160,75,160,30)} 
+  ${label(160,200,'Lateral Raise — lead with elbows, stop at shoulders')}
+  `);
+}
+
+// EXTERNAL ROTATION
+function externalRotation(){
+  return svgWrap(`
+  <defs><style>
+    .ext-forearm{animation:extRot 1.5s ease-in-out infinite;transform-origin:160px 110px}
+  </style></defs>
+  ${stickHead(160,45)}
+  ${stickLine(160,59,160,115)}
+  <!-- upper arm pinned -->
+  ${stickLine(148,80,148,115,BLU,5)}
+  <g class="ext-forearm">
+    ${stickLine(148,115,190,120,BLU,5)}
+    <rect x="190" y="113" width="18" height="7" rx="2" fill="${ACC}"/>
+  </g>
+  ${stickLine(132,115,188,115)}
+  ${stickLine(137,115,127,168)} ${stickLine(183,115,193,168)}
+  ${stickLine(127,168,117,174)} ${stickLine(193,168,203,174)}
+  <line x1="100" y1="175" x2="220" y2="175" stroke="${DIM}" stroke-width="2"/>
+  ${label(160,200,'External Rotation — elbow pinned, rotate outward')}
+  `);
+}
+
+// GOOD MORNING
+function goodMorning(){
+  return svgWrap(`
+  <defs><style>
+    .gm-body{animation:gmHinge 1.6s ease-in-out infinite;transform-origin:160px 120px}
+  </style></defs>
+  <g class="gm-body">
+    ${stickHead(160,50)}
+    ${stickLine(160,64,160,120)}
+    ${stickLine(135,85,110,80,BLU,5)} ${stickLine(185,85,210,80,BLU,5)}
+    <!-- barbell on back -->
+    <line x1="95" y1="78" x2="225" y2="78" stroke="${ACC}" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="93" cy="78" r="9" fill="${DIM}" opacity=".6"/><circle cx="227" cy="78" r="9" fill="${DIM}" opacity=".6"/>
+  </g>
+  ${stickLine(145,120,175,120)}
+  ${stickLine(150,120,138,170)} ${stickLine(170,120,182,170)}
+  ${stickLine(138,170,128,175)} ${stickLine(182,170,192,175)}
+  <line x1="110" y1="176" x2="210" y2="176" stroke="${DIM}" stroke-width="2"/>
+  ${label(160,200,'Good Morning — hinge at hips, feel hamstring stretch')}
+  `);
+}
+
+// BICEP CURL
+function bicepCurl(){
+  return svgWrap(`
+  <defs><style>
+    .curl-arm{animation:borArm 1.3s ease-in-out infinite;transform-origin:155px 95px}
+    .curl-arm2{animation:borArm2 1.3s ease-in-out infinite;transform-origin:165px 95px}
+  </style></defs>
+  ${stickHead(160,45)}
+  ${stickLine(160,59,160,115)}
+  <g class="curl-arm">
+    ${stickLine(148,80,130,115,BLU,5)}
+    ${stickLine(130,115,118,95,BLU,5)}
+    <rect x="104" y="88" width="18" height="7" rx="2" fill="${ACC}"/>
+  </g>
+  <g class="curl-arm2">
+    ${stickLine(172,80,190,115,BLU,5)}
+    ${stickLine(190,115,202,95,BLU,5)}
+    <rect x="200" y="88" width="18" height="7" rx="2" fill="${ACC}"/>
+  </g>
+  ${stickLine(132,115,188,115)}
+  ${stickLine(137,115,127,168)} ${stickLine(183,115,193,168)}
+  ${stickLine(127,168,117,174)} ${stickLine(193,168,203,174)}
+  <line x1="100" y1="175" x2="220" y2="175" stroke="${DIM}" stroke-width="2"/>
+  ${label(160,200,'Bicep Curl / Tricep Pushdown — full range each rep')}
+  `);
+}
+
+// SQUAT
+function squat(){
+  return svgWrap(`
+  <defs><style>
+    .sq-full{animation:sqBody 1.8s ease-in-out infinite;transform-origin:160px 100px}
+  </style></defs>
+  <g class="sq-full">
+    ${stickHead(160,48)}
+    <!-- torso -->
+    ${stickLine(160,62,160,112)}
+    <!-- arms out -->
+    ${stickLine(155,80,120,95,BLU,4)} ${stickLine(165,80,200,95,BLU,4)}
+    <!-- hip -->
+    ${stickLine(138,112,182,112)}
+    <!-- thighs -->
+    ${stickLine(143,112,118,150)} ${stickLine(177,112,202,150)}
+    <!-- shins -->
+    ${stickLine(118,150,128,182)} ${stickLine(202,150,192,182)}
+    <!-- feet -->
+    ${stickLine(128,182,112,185)} ${stickLine(192,182,208,185)}
+  </g>
+  <line x1="100" y1="187" x2="220" y2="187" stroke="${DIM}" stroke-width="2"/>
+  ${label(160,202,'Squat — break parallel, chest up, drive through heels')}
+  `);
+}
+
+// LUNGE
+function lunge(){
+  return svgWrap(`
+  <defs><style>
+    .lng-full{animation:sqBody 1.8s ease-in-out infinite;transform-origin:160px 110px}
+  </style></defs>
+  <g class="lng-full">
+    ${stickHead(160,48)}
+    ${stickLine(160,62,160,112)}
+    ${stickLine(150,80,120,90,BLU,4)} ${stickLine(170,80,200,90,BLU,4)}
+    <!-- hip -->
+    ${stickLine(148,112,172,112)}
+    <!-- front leg -->
+    ${stickLine(148,112,130,148)} ${stickLine(130,148,140,182)}
+    <!-- back leg -->
+    ${stickLine(172,112,198,148)} ${stickLine(198,148,185,180)}
+    ${stickLine(140,182,125,185)} ${stickLine(185,180,200,183)}
+  </g>
+  <line x1="100" y1="186" x2="220" y2="186" stroke="${DIM}" stroke-width="2"/>
+  ${label(160,202,'Lunge — knee over ankle, back knee near floor')}
+  `);
+}
+
+// STEP UP
+function stepUp(){
+  return svgWrap(`
+  <defs><style>
+    .su-body{animation:stepUp 1.6s ease-in-out infinite;transform-origin:155px 110px}
+  </style></defs>
+  <!-- step platform -->
+  <rect x="90" y="158" width="80" height="18" rx="4" fill="${DIM}" opacity=".5"/>
+  <g class="su-body">
+    ${stickHead(155,52)}
+    ${stickLine(155,66,155,116)}
+    ${stickLine(140,85,120,95,BLU,4)} ${stickLine(170,85,190,95,BLU,4)}
+    ${stickLine(140,116,168,116)}
+    <!-- front leg on step -->
+    ${stickLine(143,116,130,155)} ${stickLine(130,155,138,160)}
+    <!-- back leg -->
+    ${stickLine(163,116,188,155)} ${stickLine(188,155,195,178)}
+    ${stickLine(195,178,205,182)}
+  </g>
+  <line x1="80" y1="182" x2="230" y2="182" stroke="${DIM}" stroke-width="2"/>
+  ${label(160,200,'Step Up — drive knee up, control descent')}
+  `);
+}
+
+// LEG EXTENSION
+function legExtension(){
+  return svgWrap(`
+  <defs><style>
+    .le-shin{animation:legExtKnee 1.5s ease-in-out infinite;transform-origin:155px 138px}
+  </style></defs>
+  <!-- machine seat -->
+  <rect x="185" y="100" width="60" height="55" rx="6" fill="${DIM}" opacity=".3"/>
+  <rect x="155" y="128" width="90" height="14" rx="5" fill="${DIM}" opacity=".4"/>
+  ${stickHead(220,68)}
+  ${stickLine(220,82,220,128)}
+  ${stickLine(200,100,240,100,BLU,4)}
+  <!-- thigh seated -->
+  ${stickLine(220,128,155,138)}
+  <g class="le-shin">
+    ${stickLine(155,138,155,178)}
+    <!-- ankle pad -->
+    <rect x="143" y="172" width="22" height="8" rx="3" fill="${ACC}"/>
+  </g>
+  ${label(160,200,'Leg Extension — extend fully, 1s pause at top')}
+  `);
+}
+
+// CALF RAISES (standing)
+function calfRaises(){
+  return svgWrap(`
+  <defs><style>
+    .cr-body{animation:calfRise 1.2s ease-in-out infinite;transform-origin:160px 160px}
+  </style></defs>
+  <!-- step edge -->
+  <rect x="120" y="165" width="80" height="10" rx="3" fill="${DIM}" opacity=".5"/>
+  <line x1="100" y1="176" x2="220" y2="176" stroke="${DIM}" stroke-width="2"/>
+  <g class="cr-body">
+    ${stickHead(160,45)}
+    ${stickLine(160,59,160,112)}
+    ${stickLine(138,80,115,88,BLU,4)} ${stickLine(182,80,205,88,BLU,4)}
+    ${stickLine(135,112,185,112)}
+    ${stickLine(140,112,132,158)} ${stickLine(180,112,188,158)}
+    <!-- feet on toes -->
+    ${stickLine(132,158,130,165)} ${stickLine(188,158,190,165)}
+    ${stickLine(130,165,120,162)} ${stickLine(190,165,200,162)}
+  </g>
+  ${arrow(160,130,160,100)}
+  ${label(160,200,'Standing Calf Raise — full rise onto toes, lower past step')}
+  `);
+}
+
+// SEATED CALF
+function seatedCalf(){
+  return svgWrap(`
+  <defs><style>
+    .sc-foot{animation:calfRise 1.2s ease-in-out infinite;transform-origin:160px 160px}
+  </style></defs>
+  <!-- seat -->
+  <rect x="100" y="108" width="120" height="12" rx="5" fill="${DIM}" opacity=".4"/>
+  <!-- machine pad on thigh -->
+  <rect x="120" y="96" width="80" height="10" rx="4" fill="${ACC}" opacity=".4"/>
+  ${stickHead(160,55)}
+  ${stickLine(160,69,160,110)}
+  ${stickLine(135,88,110,85,BLU,4)} ${stickLine(185,88,210,85,BLU,4)}
+  ${stickLine(135,110,185,110)}
+  <!-- thighs -->
+  ${stickLine(140,110,130,152)} ${stickLine(180,110,190,152)}
+  <g class="sc-foot">
+    <!-- shins -->
+    ${stickLine(130,152,128,172)} ${stickLine(190,152,192,172)}
+    ${stickLine(128,172,115,170)} ${stickLine(192,172,205,170)}
+  </g>
+  <line x1="100" y1="176" x2="220" y2="176" stroke="${DIM}" stroke-width="2"/>
+  ${label(160,200,'Seated Calf Raise — targets deep soleus, 3s negative')}
+  `);
+}
+
+// LEG CURL
+function legCurl(){
+  return svgWrap(`
+  <defs><style>
+    .lc-shin{animation:legCurlKnee 1.5s ease-in-out infinite;transform-origin:175px 128px}
+  </style></defs>
+  <!-- machine pad -->
+  <rect x="50" y="95" width="180" height="12" rx="5" fill="${DIM}" opacity=".35"/>
+  <rect x="50" y="95" width="180" height="12" rx="5" fill="${DIM}" opacity=".35"/>
+  <!-- lying prone figure -->
+  ${stickHead(75,105)} 
+  ${stickLine(89,105,185,105)}
+  <!-- hip -->
+  ${stickLine(158,95,195,95,BLU,4)}
+  <!-- thigh -->
+  ${stickLine(178,105,215,112)}
+  <g class="lc-shin">
+    ${stickLine(215,112,205,82)}
+    <!-- ankle pad -->
+    <rect x="196" y="72" width="22" height="8" rx="3" fill="${ACC}"/>
+  </g>
+  ${stickLine(89,105,72,115,C,4)} ${stickLine(89,105,75,125,C,4)}
+  ${label(160,200,'Leg Curl — curl fully to glutes, slow negative')}
+  `);
+}
+
+// CARDIO RUN
+function cardioRun(){
+  return svgWrap(`
+  <defs><style>
+    .run-full{animation:runBob 0.45s ease-in-out infinite}
+    .run-l1{animation:runLeg1 0.45s ease-in-out infinite;transform-origin:160px 130px}
+    .run-l2{animation:runLeg2 0.45s ease-in-out infinite;transform-origin:160px 130px}
+    .run-a1{animation:runArm1 0.45s ease-in-out infinite;transform-origin:160px 85px}
+    .run-a2{animation:runArm2 0.45s ease-in-out infinite;transform-origin:160px 85px}
+  </style></defs>
+  <g class="run-full">
+    ${stickHead(160,48)}
+    ${stickLine(160,62,160,128)}
+    <g class="run-a1">${stickLine(155,80,130,100,BLU,4)}</g>
+    <g class="run-a2">${stickLine(165,80,190,100,BLU,4)}</g>
+    ${stickLine(142,128,178,128)}
+    <g class="run-l1">${stickLine(147,128,120,162)} ${stickLine(120,162,130,185)}</g>
+    <g class="run-l2">${stickLine(173,128,200,162)} ${stickLine(200,162,190,185)}</g>
+  </g>
+  <!-- speed lines -->
+  <line x1="60" y1="100" x2="90" y2="100" stroke="${RED}" stroke-width="2" opacity=".4"/>
+  <line x1="50" y1="115" x2="85" y2="115" stroke="${RED}" stroke-width="2" opacity=".3"/>
+  <line x1="65" y1="130" x2="88" y2="130" stroke="${RED}" stroke-width="2" opacity=".2"/>
+  <line x1="185" y1="100" x2="220" y2="100" stroke="${RED}" stroke-width="2" opacity=".4"/>
+  <line x1="190" y1="115" x2="225" y2="115" stroke="${RED}" stroke-width="2" opacity=".3"/>
+  <line x1="186" y1="130" x2="218" y2="130" stroke="${RED}" stroke-width="2" opacity=".2"/>
+  <line x1="80" y1="186" x2="240" y2="186" stroke="${DIM}" stroke-width="2"/>
+  ${label(160,202,'Cardio — maintain 60–80% max heart rate')}
+  `);
+}
+
+// CRUNCH
+function crunch(){
+  return svgWrap(`
+  <defs><style>
+    .cr-torso{animation:crunchBody 1.4s ease-in-out infinite;transform-origin:160px 138px}
+  </style></defs>
+  <!-- floor -->
+  <line x1="60" y1="165" x2="260" y2="165" stroke="${DIM}" stroke-width="2"/>
+  <!-- lower body flat -->
+  ${stickLine(160,148,220,148)}
+  ${stickLine(220,148,240,130)} ${stickLine(225,148,238,135)}
+  ${stickLine(240,130,250,135)} ${stickLine(238,135,248,140)}
+  <g class="cr-torso">
+    ${stickHead(145,108)}
+    ${stickLine(155,120,160,148)}
+    ${stickLine(175,125,188,118,BLU,4)} ${stickLine(145,125,132,118,BLU,4)}
+    <!-- hands behind head -->
+    <line x1="132" y1="118" x2="148" y2="110" stroke="${BLU}" stroke-width="3"/>
+    <line x1="188" y1="118" x2="162" y2="110" stroke="${BLU}" stroke-width="3"/>
+  </g>
+  ${label(160,185,'Crunch — chin off chest, exhale up, ab squeeze')}
+  `);
+}
+
+// REVERSE CRUNCH
+function reverseCrunch(){
+  return svgWrap(`
+  <defs><style>
+    .rc-legs{animation:sqBody 1.4s ease-in-out infinite;transform-origin:160px 140px}
+  </style></defs>
+  <line x1="60" y1="160" x2="260" y2="160" stroke="${DIM}" stroke-width="2"/>
+  ${stickHead(100,128)}
+  ${stickLine(114,130,185,130)}
+  ${stickLine(155,120,170,113,BLU,4)} ${stickLine(155,120,170,140,BLU,4)}
+  <g class="rc-legs">
+    ${stickLine(185,130,215,120)}
+    ${stickLine(215,120,218,140)}
+    ${stickLine(185,130,210,140)}
+    ${stickLine(210,140,215,155)}
+  </g>
+  ${label(160,178,'Reverse Crunch — tilt pelvis, pull knees to chest')}
+  `);
+}
+
+// LATERAL FLEX
+function lateralFlex(){
+  return svgWrap(`
+  <defs><style>
+    .lf-body{animation:gmHinge 1.5s ease-in-out infinite;transform-origin:160px 100px}
+  </style></defs>
+  <line x1="100" y1="176" x2="220" y2="176" stroke="${DIM}" stroke-width="2"/>
+  <g class="lf-body">
+    ${stickHead(160,48)}
+    ${stickLine(160,62,160,115)}
+    ${stickLine(145,80,115,90,BLU,4)} ${stickLine(175,80,205,90,BLU,4)}
+  </g>
+  ${stickLine(135,115,185,115)}
+  ${stickLine(140,115,132,165)} ${stickLine(180,115,188,165)}
+  ${stickLine(132,165,122,172)} ${stickLine(188,165,198,172)}
+  ${label(160,196,'Lateral Flexion — bend to the side, hips square')}
+  `);
+}
+
+// TWIST CRUNCH
+function twistCrunch(){
+  return svgWrap(`
+  <defs><style>
+    .tc-upper{animation:twistCrunch 1.4s ease-in-out infinite;transform-origin:175px 135px}
+  </style></defs>
+  <line x1="60" y1="168" x2="260" y2="168" stroke="${DIM}" stroke-width="2"/>
+  <!-- lower body -->
+  ${stickLine(160,148,220,148)}
+  ${stickLine(218,148,238,132)} ${stickLine(222,148,240,135)}
+  ${stickLine(238,132,248,136)} ${stickLine(240,135,250,139)}
+  <g class="tc-upper">
+    ${stickHead(148,108)}
+    ${stickLine(158,120,168,148)}
+    ${stickLine(170,125,185,118,BLU,4)}
+    ${stickLine(148,123,135,116,BLU,4)}
+    <line x1="135" y1="116" x2="152" y2="108" stroke="${BLU}" stroke-width="3"/>
+    <line x1="185" y1="118" x2="164" y2="110" stroke="${BLU}" stroke-width="3"/>
+  </g>
+  ${label(160,188,'Twisting Crunch — shoulder to opposite knee, slow')}
+  `);
+}
+
+// PLANK
+function plank(){
+  return svgWrap(`
+  <defs><style>
+    .plk-body{animation:plankShake 2s ease-in-out infinite;transform-origin:160px 140px}
+  </style></defs>
+  <line x1="60" y1="162" x2="260" y2="162" stroke="${DIM}" stroke-width="2"/>
+  <g class="plk-body">
+    ${stickHead(85,130)}
+    <!-- body straight line -->
+    ${stickLine(99,135,230,135)}
+    <!-- forearms on ground -->
+    ${stickLine(95,135,88,155,BLU,5)} ${stickLine(88,155,105,157,BLU,4)}
+    ${stickLine(108,135,100,155,BLU,5)}
+    <!-- legs back -->
+    ${stickLine(230,135,240,155)} ${stickLine(230,135,250,155)}
+    <!-- feet -->
+    ${stickLine(240,155,250,158)} ${stickLine(250,155,258,158)}
+    <!-- core activation highlight -->
+    <line x1="130" y1="132" x2="200" y2="132" stroke="${RED}" stroke-width="3" opacity=".5" stroke-dasharray="6,4"/>
+  </g>
+  ${label(160,178,'Plank — straight line, brace core, breathe steady')}
+  `);
+}
+
+// ═══════════════════════════════════
+// STATE
+// ═══════════════════════════════════
+let S = {
+  tab:'workout', done:{}, open:{upper:true,lower:false,cardio:false},
+  history:[], logs:{}, startTime:null,
+  curType:null, curIdx:null, modalTab:'timer'
+};
+let T = { total:45, rem:45, running:false, curSet:1, totalSets:3, interval:null, restInterval:null, restRem:60 };
+
+try{ const p=JSON.parse(localStorage.getItem('w4p')||'{}'); S.history=p.history||[]; S.logs=p.logs||{}; }catch(e){}
+function save(){ try{localStorage.setItem('w4p',JSON.stringify({history:S.history,logs:S.logs}))}catch(e){} }
+
+// ═══════════════════════════════════
+// RENDER
+// ═══════════════════════════════════
+function render(){
+  const c=document.getElementById('content'); c.innerHTML='';
+  if(S.tab==='workout') renderWorkout(c);
+  else if(S.tab==='history') renderHistory(c);
+  else renderStats(c);
+  updateHeader();
+}
+
+function renderWorkout(c){
+  Object.entries(EXERCISES).forEach(([key,wk],idx)=>{
+    const total=wk.list.length;
+    const comp=wk.list.filter((_,i)=>S.done[`${key}-${i}`]).length;
+    const pct=comp/total; const r=18; const circ=2*Math.PI*r;
+    const isOpen=S.open[key];
+    const el=document.createElement('div');
+    el.className='day-section fade-in';
+    el.style.animationDelay=(idx*.1)+'s';
+    el.innerHTML=`
+      <div class="day-hdr ${wk.cls} ${isOpen?'open':''}" onclick="toggleSec('${key}')">
+        <div class="day-left">
+          <span class="day-icon">${wk.emoji}</span>
+          <div><div class="day-title">${wk.label}</div><div class="day-sub">${wk.days} · ${comp}/${total}</div></div>
+        </div>
+        <div class="day-right">
+          <svg class="day-ring" width="42" height="42" viewBox="0 0 42 42">
+            <circle cx="21" cy="21" r="${r}" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="3"/>
+            <circle cx="21" cy="21" r="${r}" fill="none" stroke="${wk.color}" stroke-width="3" stroke-linecap="round"
+              stroke-dasharray="${circ.toFixed(1)}" stroke-dashoffset="${(circ*(1-pct)).toFixed(1)}"
+              style="transform:rotate(-90deg);transform-origin:center;transition:stroke-dashoffset .6s ease"/>
+            <text x="21" y="25" text-anchor="middle" fill="white" font-size="9" font-family="Outfit,sans-serif" font-weight="700">${Math.round(pct*100)}%</text>
+          </svg>
+          <span class="chevron">▾</span>
+        </div>
+      </div>
+      <div class="ex-list ${isOpen?'open':''}" id="exl-${key}">
+        ${wk.list.map((ex,i)=>{
+          const done=S.done[`${key}-${i}`];
+          return `<div class="ex-row ${wk.cls} ${done?'done':''}">
+            <div class="ex-num">${i+1}</div>
+            <div class="ex-info">
+              <div class="ex-name">${ex.name}</div>
+              <div class="ex-meta">${ex.sets} Sets × ${ex.reps}</div>
+            </div>
+            <button class="ex-btn ex-play" onclick="openEx(event,'${key}',${i})">▶</button>
+            <button class="ex-btn ex-check" onclick="markDone(event,'${key}',${i})">${done?'✓':''}</button>
+          </div>`;
+        }).join('')}
+        <div class="stretch-bar">
+          <span class="stretch-txt">${wk.cls==='upper'?'🧘 Upper Body Stretches':wk.cls==='lower'?'🧘 Lower Body Stretches':'❄️ Cool Down & Stretch'} · 15s hold each</span>
+          ${comp===total&&total>0?`<span style="font-size:11px;color:var(--gold);font-weight:700">✓ Complete!</span>`:''}
+        </div>
+      </div>`;
+    c.appendChild(el);
+    // auto-log if complete
+    if(comp===total&&total>0){
+      const already=S.history.some(h=>h.date===today()&&h.type===key);
+      if(!already){ logSession(key,wk); }
+    }
+  });
+}
+
+function renderHistory(c){
+  if(!S.history.length){
+    c.innerHTML=`<div class="hist-empty fade-in"><div class="hist-icon">📭</div><div style="font-size:15px;font-weight:700;margin-bottom:6px">No sessions yet</div><div style="font-size:12px;color:var(--dim)">Complete a workout to see it here.</div></div>`;
+    return;
+  }
+  S.history.forEach((h,i)=>{
+    const el=document.createElement('div');
+    el.className='hist-card fade-in'; el.style.animationDelay=(i*.06)+'s';
+    el.innerHTML=`<div class="hist-top"><div><div class="hist-type">${h.label}</div><div class="hist-date">${fmtDate(h.date)}</div></div><span class="hist-badge ${h.type}">${h.type.toUpperCase()}</span></div>
+      <div class="hist-nums"><div><div class="hn-v">${h.sets}</div><div class="hn-l">Sets</div></div><div><div class="hn-v">${h.ex}</div><div class="hn-l">Exercises</div></div><div><div class="hn-v">${h.dur}m</div><div class="hn-l">Duration</div></div></div>`;
+    c.appendChild(el);
+  });
+}
+
+function renderStats(c){
+  const tot=S.history.length;
+  const tSets=S.history.reduce((a,h)=>a+h.sets,0);
+  const streak=calcStreak();
+  const avgDur=tot>0?Math.round(S.history.reduce((a,h)=>a+h.dur,0)/tot):0;
+  c.innerHTML=`
+    <div class="stat-grid fade-in">
+      <div class="stat-card"><div class="sc-v">${tot}</div><div class="sc-l">Total Sessions</div><div class="sc-s">Keep the streak! 🔥</div></div>
+      <div class="stat-card"><div class="sc-v">${streak}</div><div class="sc-l">Day Streak</div><div class="sc-s">${streak>0?'On fire! 💪':'Start today!'}</div></div>
+      <div class="stat-card"><div class="sc-v">${tSets}</div><div class="sc-l">Total Sets</div><div class="sc-s">Lifetime volume</div></div>
+      <div class="stat-card"><div class="sc-v">${avgDur}m</div><div class="sc-l">Avg Duration</div><div class="sc-s">Per session</div></div>
+    </div>
+    <div class="streak-card fade-in">
+      <div class="streak-label">Last 7 Days</div>
+      <div class="sday-grid">${last7()}</div>
+    </div>
+    <div class="stat-grid fade-in">
+      <div class="stat-card"><div class="sc-v" style="color:var(--upper-a)">${S.history.filter(h=>h.type==='upper').length}</div><div class="sc-l">Upper Sessions</div></div>
+      <div class="stat-card"><div class="sc-v" style="color:var(--lower-a)">${S.history.filter(h=>h.type==='lower').length}</div><div class="sc-l">Lower Sessions</div></div>
+    </div>
+    <div class="stat-card fade-in" style="margin-bottom:8px"><div class="sc-v" style="color:var(--cardio-a)">${S.history.filter(h=>h.type==='cardio').length}</div><div class="sc-l">Cardio Sessions</div></div>
+    <button onclick="clearAll()" style="width:100%;height:44px;border-radius:100px;background:rgba(255,85,85,.1);color:#ff7070;border:1px solid rgba(255,85,85,.2);font-family:'Outfit',sans-serif;font-weight:700;font-size:13px;cursor:pointer;margin-top:6px">🗑️ Reset All Data</button>`;
+}
+
+function last7(){
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], now=new Date();
+  return Array.from({length:7},(_,i)=>{
+    const d=new Date(now); d.setDate(d.getDate()-(6-i));
+    const s=d.toISOString().slice(0,10);
+    const done=S.history.some(h=>h.date===s);
+    const isToday=s===today();
+    return `<div class="sday ${done?'done':''} ${isToday?'today':''}">${days[d.getDay()]}</div>`;
+  }).join('');
+}
+
+function calcStreak(){
+  let streak=0,d=new Date();
+  for(let i=0;i<100;i++){
+    const s=d.toISOString().slice(0,10);
+    if(S.history.some(h=>h.date===s)){streak++;d.setDate(d.getDate()-1);}
+    else if(i===0){d.setDate(d.getDate()-1);}else break;
+  }
+  return streak;
+}
+
+function updateHeader(){
+  document.getElementById('hSess').textContent=S.history.length;
+  document.getElementById('hStreak').textContent=calcStreak();
+  document.getElementById('hSets').textContent=S.history.reduce((a,h)=>a+h.sets,0);
+}
+
+function today(){ return new Date().toISOString().slice(0,10); }
+function fmtDate(d){ return new Date(d+'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}); }
+
+// ═══════════════════════════════════
+// OPEN EXERCISE MODAL
+// ═══════════════════════════════════
+function openEx(e,key,idx){
+  e.stopPropagation();
+  S.curType=key; S.curIdx=idx;
+  const wk=EXERCISES[key], ex=wk.list[idx], exKey=`${key}-${idx}`;
+  if(!S.startTime) S.startTime=Date.now();
+
+  // Header
+  document.getElementById('evTag').textContent=wk.label;
+  document.getElementById('evTag').className=`ev-tag ${wk.cls}`;
+  document.getElementById('evTitle').textContent=ex.name;
+  document.getElementById('evSub').textContent=`${ex.sets} Sets × ${ex.reps}`;
+
+  // Animation
+  document.getElementById('svgContainer').innerHTML=ex.svg();
+  document.getElementById('muscleLabel').textContent=ex.muscle;
+
+  // Tips
+  const tips=ex.tips.map(t=>`<div class="tip-item"><div class="tip-dot"></div><span>${t}</span></div>`).join('');
+  document.getElementById('formTips').innerHTML=tips;
+
+  // Ring color
+  document.getElementById('ringBar').style.stroke=wk.color;
+
+  // Timer
+  T.totalSets=ex.sets; T.curSet=1; T.total=45; T.rem=45; T.running=false;
+  clearInterval(T.interval); clearInterval(T.restInterval);
+  buildDurChips(); buildSetDots(); resetRing();
+
+  // Log
+  buildLogRows(exKey, ex.sets);
+
+  // Muscles
+  buildMuscles(ex.muscles);
+
+  // Modal tab
+  switchModalTab('timer');
+  document.getElementById('restPanel').classList.remove('show');
+
+  document.getElementById('overlay').classList.add('open');
+}
+
+function buildDurChips(){
+  const durs=[20,30,45,60];
+  document.getElementById('durRow').innerHTML=durs.map(d=>`<div class="dur-chip ${T.total===d?'on':''}" onclick="setDur(${d})">${d}s</div>`).join('');
+}
+function setDur(d){ T.total=d; T.rem=d; buildDurChips(); resetRing(); }
+
+function buildSetDots(){
+  document.getElementById('setDots').innerHTML=Array.from({length:T.totalSets},(_,i)=>`<div class="sdot ${i+1<T.curSet?'done':i+1===T.curSet?'cur':''}"></div>`).join('');
+}
+
+function buildLogRows(exKey,sets){
+  const existing=S.logs[exKey]||Array.from({length:sets},()=>({reps:'',weight:'',done:false}));
+  S.logs[exKey]=existing;
+  document.getElementById('logRows').innerHTML=existing.map((s,i)=>`
+    <div class="log-row">
+      <div class="log-num">Set ${i+1}</div>
+      <input class="log-input" type="number" placeholder="—" value="${s.reps}" inputmode="numeric" oninput="saveLog('${exKey}',${i},'reps',this.value)">
+      <input class="log-input" type="number" placeholder="—" step="0.5" value="${s.weight}" inputmode="decimal" oninput="saveLog('${exKey}',${i},'weight',this.value)">
+      <div class="log-done ${s.done?'chk':''}" onclick="toggleLogDone('${exKey}',${i})">${s.done?'✓':''}</div>
+    </div>`).join('');
+}
+
+function saveLog(key,i,field,val){ if(S.logs[key]){S.logs[key][i][field]=val;save();} }
+function toggleLogDone(key,i){
+  if(!S.logs[key]) return;
+  S.logs[key][i].done=!S.logs[key][i].done;
+  const el=document.querySelectorAll('.log-done')[i];
+  if(el){el.classList.toggle('chk');el.textContent=S.logs[key][i].done?'✓':'';}
+  save();
+}
+
+function buildMuscles(muscles){
+  document.getElementById('mmGrid').innerHTML=muscles.map(m=>`
+    <div class="mm-chip ${m.r==='Primary'?'primary':''}">
+      <div class="mm-chip-name">${m.n}</div>
+      <div class="mm-chip-role">${m.r}</div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════
+// MODAL TAB SWITCH
+// ═══════════════════════════════════
+function switchModalTab(tab){
+  S.modalTab=tab;
+  document.querySelectorAll('.mtab').forEach((b,i)=>{
+    b.classList.toggle('active',['timer','log','muscles'][i]===tab);
+  });
+  document.getElementById('timerSection').classList.toggle('show',tab==='timer');
+  document.getElementById('logSection').classList.toggle('show',tab==='log');
+  document.getElementById('muscleMap').classList.toggle('show',tab==='muscles');
+}
+
+// ═══════════════════════════════════
+// TIMER
+// ═══════════════════════════════════
+function resetRing(){
+  clearInterval(T.interval); T.running=false; T.rem=T.total;
+  document.getElementById('ringNum').textContent=pad(T.total);
+  document.getElementById('ringLbl').textContent='READY';
+  document.getElementById('timerBtn').textContent='▶ START';
+  setRingBar(1);
+}
+
+function toggleTimer(){
+  if(T.running) pauseTimer(); else startTimer();
+}
+
+function startTimer(){
+  T.running=true;
+  document.getElementById('timerBtn').textContent='⏸ PAUSE';
+  document.getElementById('ringLbl').textContent='WORKING';
+  T.interval=setInterval(()=>{
+    T.rem--;
+    document.getElementById('ringNum').textContent=pad(T.rem);
+    setRingBar(T.rem/T.total);
+    if(T.rem<=0){ clearInterval(T.interval); T.running=false; onSetDone(); }
+  },1000);
+}
+
+function pauseTimer(){
+  clearInterval(T.interval); T.running=false;
+  document.getElementById('timerBtn').textContent='▶ RESUME';
+  document.getElementById('ringLbl').textContent='PAUSED';
+}
+
+function onSetDone(){
+  document.getElementById('ringLbl').textContent='DONE! 🔥';
+  document.getElementById('timerBtn').textContent='▶ START';
+  vibrate();
+  const exKey=`${S.curType}-${S.curIdx}`;
+  if(S.logs[exKey]&&S.logs[exKey][T.curSet-1]){S.logs[exKey][T.curSet-1].done=true;save();}
+  if(T.curSet<T.totalSets){ startRest(); } else { toast('🎉 All sets complete!'); }
+}
+
+function resetTimer(){ clearInterval(T.interval); T.running=false; resetRing(); buildSetDots(); }
+
+function nextSet(){
+  if(T.curSet<T.totalSets){ T.curSet++; buildSetDots(); resetRing(); toast(`Set ${T.curSet} of ${T.totalSets}`); }
+  else { toast('All sets done! ✓'); closeModal(); const k=`${S.curType}-${S.curIdx}`; S.done[k]=true; save(); render(); }
+}
+
+function setRingBar(frac){
+  const circ=490; document.getElementById('ringBar').style.strokeDashoffset=(circ*(1-frac)).toFixed(1);
+}
+
+function startRest(){
+  T.restRem=60;
+  document.getElementById('timerSection').classList.remove('show');
+  document.getElementById('restPanel').classList.add('show');
+  document.getElementById('restNum').textContent=T.restRem;
+  T.restInterval=setInterval(()=>{
+    T.restRem--;
+    document.getElementById('restNum').textContent=T.restRem;
+    if(T.restRem<=0){clearInterval(T.restInterval);skipRest();}
+  },1000);
+}
+
+function skipRest(){
+  clearInterval(T.restInterval);
+  document.getElementById('restPanel').classList.remove('show');
+  document.getElementById('timerSection').classList.add('show');
+  T.curSet++; buildSetDots(); resetRing(); toast(`Set ${T.curSet} of ${T.totalSets}`);
+}
+
+function pad(n){ return n<10?'0'+n:''+n; }
+function vibrate(){ try{navigator.vibrate&&navigator.vibrate([100,50,100]);}catch(e){} }
+
+// ═══════════════════════════════════
+// INTERACTIONS
+// ═══════════════════════════════════
+function toggleSec(key){ S.open[key]=!S.open[key]; render(); }
+
+function markDone(e,key,idx){
+  e.stopPropagation();
+  const k=`${key}-${idx}`; S.done[k]=!S.done[k];
+  if(S.done[k]&&!S.startTime) S.startTime=Date.now();
+  save(); render();
+}
+
+function overlayClick(e){ if(e.target===document.getElementById('overlay')) closeModal(); }
+
+function closeModal(){
+  clearInterval(T.interval); clearInterval(T.restInterval); T.running=false;
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('restPanel').classList.remove('show');
+  render();
+}
+
+function logSession(key,wk){
+  const sets=wk.list.reduce((a,ex)=>a+ex.sets,0);
+  const dur=S.startTime?Math.round((Date.now()-S.startTime)/60000):45;
+  S.history.unshift({date:today(),type:key,label:wk.label,sets,ex:wk.list.length,dur:dur||45});
+  save();
+  document.getElementById('wcSub').textContent=`${wk.label} session finished!`;
+  document.getElementById('wcSets').textContent=sets;
+  document.getElementById('wcEx').textContent=wk.list.length;
+  document.getElementById('wcTime').textContent=(dur||45)+'m';
+  document.getElementById('wcOverlay').classList.add('show');
+}
+
+function closeWC(){ document.getElementById('wcOverlay').classList.remove('show'); S.startTime=null; }
+
+function switchTab(tab){
+  S.tab=tab;
+  ['workout','history','stats'].forEach(t=>{
+    const idx=['workout','history','stats'].indexOf(t);
+    document.querySelectorAll('.tab')[idx].classList.toggle('active',t===tab);
+    const n=document.getElementById('nav'+t.charAt(0).toUpperCase()+t.slice(1));
+    if(n) n.classList.toggle('active',t===tab);
+  });
+  render(); window.scrollTo({top:0,behavior:'smooth'});
+}
+
+let toastT;
+function toast(msg){
+  const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show');
+  clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove('show'),2200);
+}
+
+function clearAll(){
+  if(confirm('Reset all data?')){ S.history=[];S.done={};S.logs={};S.startTime=null;save();render();toast('Data cleared'); }
+}
+
+render();
+</script>
+</body>
+</html>
